@@ -6,13 +6,30 @@ type Inputs = {
 };
 
 export default function Index() {
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data.text);
+
+  const changeTextValue = (value: string) => {
+    setValue('text', value);
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ margin: '50px' }}>
       <input {...register('text')} style={{ margin: '20px' }} />
       <input type="submit" />
+      <div>
+        {['orange', 'grape', 'banana'].map((value) => {
+          return (
+            <button
+              style={{ margin: '10px' }}
+              key={value}
+              onClick={() => changeTextValue(value)}
+            >
+              {value}
+            </button>
+          );
+        })}
+      </div>
     </form>
   );
 }
