@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 type Inputs = {
   text: string;
   example: string;
+  examplePattern: string;
   exampleRequired: string;
 };
 
@@ -15,7 +16,7 @@ export default function Index() {
     getValues,
     resetField,
     watch,
-    formState: { errors },
+    formState: { isSubmitted, errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   console.log(watch('example'));
@@ -62,6 +63,19 @@ export default function Index() {
         />
         <div>
           <input
+            {...register('examplePattern', {
+              minLength: 8,
+              maxLength: 16,
+              pattern: /[a-zA-Z0-9.?/-]/,
+            })}
+            style={{ margin: '10px' }}
+          />
+          {errors.examplePattern && (
+            <span style={{ color: 'red' }}>invalid value</span>
+          )}
+        </div>
+        <div>
+          <input
             {...register('exampleRequired', { required: true })}
             style={{ margin: '10px' }}
           />
@@ -70,6 +84,11 @@ export default function Index() {
           )}
         </div>
         <input type="submit" style={{ margin: '10px' }} />
+        {isSubmitted && (
+          <span style={{ color: 'blue', marginLeft: '10px' }}>
+            submitted value at least once
+          </span>
+        )}
       </form>
     </>
   );
