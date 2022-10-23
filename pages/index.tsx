@@ -6,11 +6,12 @@ type Inputs = {
 };
 
 export default function Index() {
-  const { register, handleSubmit, setValue } = useForm<Inputs>();
+  const { register, handleSubmit, setValue, getValues } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data.text);
 
   const changeTextValue = (value: string) => {
-    setValue('text', value);
+    const currentValue = getValues('text');
+    setValue('text', currentValue === '' ? value : `${currentValue},${value}`);
   };
 
   return (
