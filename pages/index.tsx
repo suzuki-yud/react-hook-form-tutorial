@@ -6,12 +6,17 @@ type Inputs = {
 };
 
 export default function Index() {
-  const { register, handleSubmit, setValue, getValues } = useForm<Inputs>();
+  const { register, handleSubmit, setValue, getValues, resetField } =
+    useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data.text);
 
   const changeTextValue = (value: string) => {
     const currentValue = getValues('text');
     setValue('text', currentValue === '' ? value : `${currentValue},${value}`);
+  };
+
+  const resetTextValue = () => {
+    resetField('text', { defaultValue: '' });
   };
 
   return (
@@ -30,6 +35,12 @@ export default function Index() {
             </button>
           );
         })}
+        <button
+          onClick={resetTextValue}
+          style={{ margin: '10px', background: 'gray', color: 'white' }}
+        >
+          クリア
+        </button>
       </div>
     </form>
   );
